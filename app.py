@@ -32,38 +32,64 @@ st.set_page_config(
     page_icon="🌟",  # Emoji as favicon
     layout="centered"
 )
-
 st.markdown("""
     <style>
-        .stApp {
-            background: linear-gradient(135deg, #f0f4f8, #e6f2ff);
-            font-family: 'Inter', sans-serif;
+        :root {
+            --user-bubble-bg: linear-gradient(to right, #4a90e2, #1e3c72);
+            --bot-bubble-bg-light: #f5f5f5;
+            --bot-bubble-bg-dark: #2a2a2a;
+            --text-color-light: #000;
+            --text-color-dark: #fff;
         }
+
+        @media (prefers-color-scheme: dark) {
+            body, .stApp {
+                background: linear-gradient(135deg, #1a1a1a, #2e2e2e) !important;
+                color: var(--text-color-dark) !important;
+            }
+            .bot-bubble {
+                background: var(--bot-bubble-bg-dark) !important;
+                color: var(--text-color-dark) !important;
+                border: 1px solid #444;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            body, .stApp {
+                background: linear-gradient(135deg, #fafbfc, #dee7f0) !important;
+                color: var(--text-color-light) !important;
+            }
+            .bot-bubble {
+                background: var(--bot-bubble-bg-light) !important;
+                color: var(--text-color-light) !important;
+                border: 1px solid #ccc;
+            }
+        }
+
         .chat-bubble {
-            max-width: 80%;
+            max-width: 75%;
             padding: 1rem 1.5rem;
-            border-radius: 16px;
-            margin-bottom: 1rem;
+            border-radius: 18px;
+            margin: 0.5rem 0;
             font-size: 1rem;
-            line-height: 1.6;
+            line-height: 1.5;
             word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        .bot-bubble {
-            background: #f1f1f1;
-            border: 1px solid #e0e0e0;
-            color: #333;
-            margin-right: auto;
-        }
+
         .user-bubble {
-            background: linear-gradient(135deg, #4a90e2, #357abd);
-            color: white;
+            background: var(--user-bubble-bg) !important;
+            color: #fff !important;
             margin-left: auto;
         }
+
         #MainMenu, header, footer {
-            visibility: hidden;
+            display: none;
         }
     </style>
 """, unsafe_allow_html=True)
+
+
 
 st.title("Goals Bot")
 st.markdown("#### Let’s work on a dream or build a roadmap.")
