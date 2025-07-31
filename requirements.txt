@@ -1,3 +1,5 @@
 streamlit
 together
 requests
+sentence-transformers
+chromadb
