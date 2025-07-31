@@ -1,18 +1,30 @@
 import streamlit as st
 import together
+from vector_store import retrieve_similar_docs  # import your RAG retriever
 
 # ==== TOGETHER AI SETUP ====
 together.api_key = "9b5fdbfe6e161ca597bbdcda5d7892b41dce8932d1ce02a2504b0cbd5f9bd400"
 LLM_MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 def get_bot_response(message):
-    # Handle stuck message manually
-   if any(phrase in message.lower() for phrase in ["i am stuck", "i am feeling stuck", "stuck in this task"]):
-    return "It’s okay to feel stuck sometimes! 😊 Try taking a short break and doing something you enjoy, like reading, watching a movie, or going for a walk."
+    if any(phrase in message.lower() for phrase in ["i am stuck", "i am feeling stuck", "stuck in this task"]):
+        return "It’s okay to feel stuck sometimes! 😊 Try taking a short break and doing something you enjoy, like reading, watching a movie, or going for a walk."
 
+    try:
+        # === Retrieve context ===
+        similar_docs = retrieve_similar_docs(message)
+        context = "\n\n".join(similar_docs)
 
-   try:
-        prompt = f"You are a helpful assistant.\nUser: {message}\nAssistant:"
+        # === Construct the prompt with context ===
+        prompt = f"""You are a goal-planning assistant helping users overcome blockers and build roadmaps.
+Use the following context to answer:
+
+Context:
+{context}
+
+User: {message}
+Assistant:"""
+
         response = together.Complete.create(
             prompt=prompt,
             model=LLM_MODEL,
@@ -23,8 +35,8 @@ def get_bot_response(message):
             repetition_penalty=1.1
         )
         return response['choices'][0]['text'].strip()
-   except Exception as e:
-        return "Good to know!  I ran into an issue while thinking. Please try again shortly."
+    except Exception as e:
+        return "Something went wrong while thinking. Please try again soon."
 
 # ==== STREAMLIT UI SETUP ====
 st.set_page_config(

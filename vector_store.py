@@ -41,3 +41,12 @@ embeddings = model.encode(documents).tolist()
 collection.add(documents=documents, embeddings=embeddings, ids=[f"id_{i}" for i in range(len(documents))])
 
 print("Vector store created with", len(documents), "documents.")
+
+# === Retriever Function ===
+def retrieve_similar_docs(query, top_k=3):
+    query_embedding = model.encode([query]).tolist()[0]
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k
+    )
+    return results["documents"][0]
