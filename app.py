@@ -48,7 +48,7 @@ st.markdown("""
     <style>
         :root {
             --user-bubble-bg: linear-gradient(to right, #4a90e2, #1e3c72);
-            --bot-bubble-bg-light: #f5f5f5;
+            --bot-bubble-bg-light: ##e1bee7;
             --bot-bubble-bg-dark: #2a2a2a;
             --text-color-light: #000;
             --text-color-dark: #fff;
