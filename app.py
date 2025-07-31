@@ -1,9 +1,11 @@
 import streamlit as st
 import together
 from vector_store import retrieve_similar_docs  # import your RAG retriever
+import os
 
 # ==== TOGETHER AI SETUP ====
-together.api_key = "9b5fdbfe6e161ca597bbdcda5d7892b41dce8932d1ce02a2504b0cbd5f9bd400"
+together.api_key = os.getenv("TOGETHER_API_KEY")
+
 LLM_MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 def get_bot_response(message):
@@ -28,7 +30,7 @@ Assistant:"""
         response = together.Complete.create(
             prompt=prompt,
             model=LLM_MODEL,
-            max_tokens=1500,
+            max_tokens=6000,
             temperature=0.7,
             top_k=50,
             top_p=0.7,
@@ -48,7 +50,7 @@ st.markdown("""
     <style>
         :root {
             --user-bubble-bg: linear-gradient(to right, #4a90e2, #1e3c72);
-            --bot-bubble-bg-light: ##e1bee7;
+            --bot-bubble-bg-light: #f5f5f5;
             --bot-bubble-bg-dark: #2a2a2a;
             --text-color-light: #000;
             --text-color-dark: #fff;
@@ -66,17 +68,18 @@ st.markdown("""
             }
         }
 
-        @media (prefers-color-scheme: light) {
-            body, .stApp {
-                background: linear-gradient(135deg, #fafbfc, #dee7f0) !important;
-                color: var(--text-color-light) !important;
-            }
-            .bot-bubble {
-                background: var(--bot-bubble-bg-light) !important;
-                color: var(--text-color-light) !important;
-                border: 1px solid #ccc;
-            }
-        }
+  @media (prefers-color-scheme: light) {
+    body, .stApp {
+        background: linear-gradient(135deg, #e6e6fa, #d8bfd8) !important; /* Lavender tones */
+        color: var(--text-color-light) !important;
+    }
+    .bot-bubble {
+        background: var(--bot-bubble-bg-light) !important;
+        color: var(--text-color-light) !important;
+        border: 1px solid #ccc;
+    }
+}
+
 
         .chat-bubble {
             max-width: 75%;
